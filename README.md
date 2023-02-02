@@ -1,2 +1,2 @@
 # Forge
-## Use DBINIT for initializing database
+## Use Localhost/Forge/DBINIT for initializing database

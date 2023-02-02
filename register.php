@@ -16,42 +16,47 @@
    $emailid  = $_POST["emailid"];
    $password  = $_POST["password"];
    $passwordbcrypt = password_Hash($password,PASSWORD_DEFAULT);
-   $display_error = array();
+   $errors = array();
             
             if ( empty($uname) || !preg_match ("/^[a-zA-z]*$/", $uname) ) {
-             array_push($display_error,"Enter Username");
+             array_push($errors,"Enter Username");
                }
             if (empty($emailid) || (!filter_var($emailid, FILTER_VALIDATE_EMAIL))) {
-               array_push($display_error,"Enter valid Email");
+               array_push($errors,"Enter valid Email");
             }
             if (empty($password) || strlen($password)<6 ) {
-               array_push($display_error,"  Password must contain 6 digits");
+               array_push($errors,"  Password must contain 6 digits");
             }
              require_once"dbconnect.php";
-            if (count($display_error)>0) {
-             foreach ($display_error as  $error) 
-             { echo "<div class='alert alert-warning'>$error</div>"; }
+
+             $sql = "SELECT * FROM register WHERE emailId = '$emailid'";
+             $result = mysqli_query($dbconn, $sql);
+             $rowCount = mysqli_num_rows($result);
+             if ($rowCount>0) {
+               array_push($errors,"Email already exists!");
+              }
+
+            if (count($errors)>0) {
+             foreach ($errors as  $error) 
+             { echo "<div class='alert alert-warning'>$error</div>";}
             }
+            
               else{
-               $sql = "INSERT INTO register (username, emailId, password) VALUES (?,?,?,?)";
+               $sql = "INSERT INTO register (username, emailId, password) VALUES (?,?,?)";
                $stmt = mysqli_stmt_init($dbconn);
                $prepareStmt = mysqli_stmt_prepare($stmt,$sql);
                if ($prepareStmt) 
                {
                   mysqli_stmt_bind_param($stmt,"sss",$uname, $emailid, $passwordbcrypt);
                   mysqli_stmt_execute($stmt);
-                  echo "<div class='alert alert-warning'>$error</div>"; 
+                  echo '<a href="login.php"> Login</a>'; 
+                
                }
                     die("Something went wrong");
              }} ?>
 
       <h3>Registration Page</h3>
     <form action="register.php" method="post" autocomplete="off">
-    <!-- <div class="form-group">
-        <label for="Id" >Id:</label><br>
-        <input type="Id" class="form-control" id="Id" name="Id" readonly>
-        <br>
-     </div> -->
        <div class="form-group">
         <label for="username"  >Username:</label><br>
         <input type="name"  class="form-control" id="uname" name="uname" placeholder="enter username">

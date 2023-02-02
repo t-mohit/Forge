@@ -1,3 +1,19 @@
+
+/* index.php */
+
+.indexcontainer{
+    width:fit-content;
+    margin: 50% 48% 0% 48%;
+    height:fit-content;
+    text-align: center;
+}
+indexcontainer a hover{ color:blue}
+
+   #btn{  
+    font-size: 25px;  
+    } 
+/* register.php */
+
 body{
     background-color:rgb(167, 205, 214);
 }
@@ -49,6 +65,10 @@ button hover
     margin-left:30%;
     color:red;
     }
+
+/* Login.php */
+
+.Homecontainer hover{Color:red;}
 
 /* response.php */
 
